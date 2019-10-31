@@ -76,8 +76,7 @@ export default {
         'pagenum': 1,
         'token': this.$store.getters.token_getters,
         'username': this.$store.getters.username_getters
-      },
-      withCredentials: false
+      }
     }).then(res => {
       console.log(res)
       this.data = res.data
@@ -109,16 +108,20 @@ export default {
     sign () {
       this.$nextTick(() => {
         if (this.sign === 1) {
+          console.log('1')
           this.map.layers.addMany([store.getters.layers_getters[this.index]])
           this.$message.success('成功加载' + [store.getters.layers_getters[this.index]][0].title + '图层')
           // console.log(this.sign, this.index)
         } else if (this.sign === -1) {
+          console.log('-1')
           this.map.layers.removeMany([store.getters.layers_getters[this.index]])
           this.$message.info('成功取消' + [store.getters.layers_getters[this.index]][0].title + '图层')
           // console.log(this.sign, this.index)
         }
       })
     }
+  },
+  updated: {
   },
   methods: {
     // 地图生成核心函数
@@ -146,6 +149,7 @@ export default {
         ]) => {
           // 循环加载图层至数组
           for (let i = 0; i < this.data.length; i++) {
+            console.log('ok')
             // let name = this.data[i].name
             let type = this.data[i].type
             let copyRight = this.data[i].copyright

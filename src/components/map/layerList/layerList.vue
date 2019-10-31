@@ -44,12 +44,18 @@
               class="el-menu-vertical-demo">
               <el-submenu :index="group[groupItem - 1]" v-for="groupItem in group.length" :key="groupItem">
                 <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>{{ group[groupItem - 1]}}</span>
+                  <i class="icon-folder-minus"></i>
+                  <span>{{ group[groupItem - 1] }}</span>
                 </template>
-                <el-menu-item :index="item" v-for="item in sublayerReturn(group[groupItem - 1])" :key="item">
-                  <el-checkbox id="checkItem" :label="item">{{ item }}</el-checkbox>
-                </el-menu-item>
+                <el-submenu :index="group[groupItem - 1] + distinctChild(group[groupItem - 1])[groupItemChild - 1]" v-for="groupItemChild in distinctChild(group[groupItem - 1]).length" :key="groupItemChild">
+                  <template slot="title">
+                    <i class="icon-stack"></i>
+                    <span>{{ distinctChild(group[groupItem - 1])[groupItemChild - 1] }}</span>
+                  </template>
+                  <el-menu-item :index="item" v-for="item in sublayerReturn(group[groupItem - 1], distinctChild(group[groupItem - 1])[groupItemChild - 1])" :key="item">
+                    <el-checkbox id="checkItem" :label="item">{{ item }}</el-checkbox>
+                  </el-menu-item>
+                </el-submenu>
               </el-submenu>
             </el-menu>
           </el-checkbox-group>
@@ -73,11 +79,9 @@ export default {
       }
     }).then(res => {
       console.log(res)
-      console.log('ok')
       this.data = res.data
       this.distinct(res.data)
-    }).catch(err => {
-      console.log(err)
+    }).catch(() => {
       console.log('error')
     })
   },
@@ -87,7 +91,8 @@ export default {
       findLayers: '',
       showFindRow: false,
       group: [],
-      layers: []
+      groupChild: [],
+      layers: ['道路规划']
     }
   },
   computed: {
@@ -151,12 +156,36 @@ export default {
       }
       this.group = result
     },
+    // 获取childGroup并去除重复值
+    distinctChild (val) {
+      let arr = []
+      // let name = []
+      let data = this.data
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].group === val) {
+          arr.push(data[i].childgroup)
+        }
+      }
+      let result = []
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+          if (arr[i] === arr[j]) {
+            j = ++i
+          }
+        }
+        result.push(arr[i])
+      }
+      this.groupChild = result
+      return result
+    },
     // 获取每个group下的内容并返回
-    sublayerReturn (val) {
+    sublayerReturn (val1, val2) {
       let arr = []
       for (let i = 0; i < this.data.length; i++) {
-        if (this.data[i].group === val) {
-          arr.push(this.data[i].name)
+        if (this.data[i].group === val1) {
+          if (this.data[i].childgroup === val2) {
+            arr.push(this.data[i].name)
+          }
         }
       }
       return arr

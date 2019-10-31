@@ -81,7 +81,7 @@ export default {
     getInfo () {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/user/queryByUsername',
+        url: 'http://10.250.0.120:2720/api/User/queryByUsername',
         withCredentials: false,
         headers: {
           'token': this.$store.getters.token_getters,
@@ -145,7 +145,7 @@ export default {
     getDepartment () {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/department/getAllDepartment'
+        url: 'http://10.250.0.120:2720/api/Department/getAllDepartment'
       }).then(res => {
         let list = []
         for (let i = 0; i < res.data.length; i++) {

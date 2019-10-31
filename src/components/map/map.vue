@@ -70,9 +70,16 @@ export default {
   created () {
     this.getLength()
     this.axios({
-      methods: 'post',
-      url: 'http://yitongli.cn/app/get_layers'
+      method: 'post',
+      url: 'http://10.250.0.120:2720/api/Layers/getAllLayersList',
+      headers: {
+        'pagenum': 1,
+        'token': this.$store.getters.token_getters,
+        'username': this.$store.getters.username_getters
+      },
+      withCredentials: false
     }).then(res => {
+      console.log(res)
       this.data = res.data
     })
   },
@@ -117,7 +124,7 @@ export default {
     // 地图生成核心函数
     createMap () {
       const options = {
-        url: 'http://yitongli.cn/arcgis/init.js'
+        url: 'http://10.250.0.120:2720/init.js'
       }
       loadModules([
         'esri/Map',
@@ -261,7 +268,7 @@ export default {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-@import url('http://yitongli.cn/arcgis/main.css')
+@import url('http://10.250.0.120:2720/main.css')
 .title_map
   position fixed
   top 1%

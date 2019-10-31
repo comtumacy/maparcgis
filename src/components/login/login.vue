@@ -178,7 +178,7 @@ export default {
     getCaptchaImg () {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/captcha/getCaptcha',
+        url: 'http://10.250.0.120:2720/api/Captcha/getCaptcha',
         responseType: 'arraybuffer'
       }).then(res => {
         this.ctoken = res.headers.ctoken
@@ -202,7 +202,7 @@ export default {
     loginEnter () {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/user/login',
+        url: 'http://10.250.0.120:2720/api/User/login',
         data: { 'username': this.userName, password: this.passWord },
         headers: { 'ctoken': this.ctoken, 'captcha': this.verificationCode }
       }).then(res => {
@@ -218,7 +218,8 @@ export default {
         } else if (res.status === 401) {
           this.$message(res.data.message)
         }
-      }).catch(() => {
+      }).catch(err => {
+        console.log(err)
         this.$message('登录失败，请重试')
       })
     }

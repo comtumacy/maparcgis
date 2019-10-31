@@ -18,7 +18,7 @@
 <script type="text/ecmascript-6">
 export default {
   components: {},
-  props: [],
+  props: ['adminLeftUserDepartmentSelectionSign'],
   created () {
     this.getDepartment()
   },
@@ -36,13 +36,17 @@ export default {
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    adminLeftUserDepartmentSelectionSign () {
+      this.getDepartment()
+    }
+  },
   methods: {
     // 获取部门全部数据
     getDepartment () {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/department/getAllDepartment'
+        url: 'http://10.250.0.120:2720/api/Department/getAllDepartment'
       }).then(res => {
         let list = []
         for (let i = 0; i < res.data.length; i++) {

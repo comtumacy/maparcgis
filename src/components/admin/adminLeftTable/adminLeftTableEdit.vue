@@ -1,6 +1,31 @@
 <template>
   <div class="layersTable">
     <div>
+      <div class="header">
+        <el-row :gutter="10" type="flex" justify="start">
+          <el-col :span="6">
+            <el-button class="button1">所有用户</el-button>
+          </el-col>
+          <el-col :span="6">
+            <el-button>添加用户</el-button>
+          </el-col>
+          <el-col :span="6">
+            <el-button>搜索用户</el-button>
+          </el-col>
+          <el-col :span="6">
+            <el-button>删除用户</el-button>
+          </el-col>
+          <el-col :span="6">
+            <el-button>用户统计</el-button>
+          </el-col>
+          <el-col :span="6">
+            <el-button>添加科室</el-button>
+          </el-col>
+          <el-col :span="6">
+            <el-button>科室选择</el-button>
+          </el-col>
+        </el-row>
+      </div>
       <el-table
         :data="data"
         border
@@ -19,6 +44,7 @@
           label="图层名称"
           width="120"
           header-align="center"
+          align="center"
           :resizable="false">
         </el-table-column>
         <el-table-column
@@ -53,6 +79,14 @@
         <el-table-column
           prop="copyright"
           label="版权"
+          width="120"
+          header-align="center"
+          align="center"
+          :resizable="false">
+        </el-table-column>
+        <el-table-column
+          prop="group"
+          label="分组"
           width="120"
           header-align="center"
           align="center"
@@ -94,11 +128,19 @@ export default {
     adminLeftTableEditAlert
   },
   created () {
-    this.axios.post('http://yitongli.cn/app/get_layers')
-      .then(res => {
-        this.data = res.data
-        this.loading = false
-      })
+    this.axios({
+      method: 'post',
+      url: 'http://10.250.0.12.:2720/api/Layers/getAllLayersListPaging',
+      headers: {
+        'token': this.$store.getters.token_getters,
+        'username': this.$store.getters.username_getters,
+        'pagenum': 1
+      }
+    }).then(res => {
+      console.log(res)
+      this.data = res.data
+      this.loading = false
+    })
       .catch(() => {
         this.$message.error('获取数据失败，请检查你的网络')
       })
@@ -130,7 +172,14 @@ export default {
     // 关闭表格框且提交修改数据
     closeAndEdit (ruleForm) {
       this.sign = false
-      this.axios.post('http://yitongli.cn/app/post_layers', { ruleForm })
+      this.axios({
+        method: 'post',
+        url: 'http://10.250.0.12.:2720/api/Layers/updateByNameSelective',
+        headers: {
+          'token': this.$store.getters.token_getters,
+          'username': this.$store.getters.username_getters
+        }
+      })
         .then(res => {
           if (res.data === '修改成功') {
             this.$alert('内容已经修改成功！', '修改提示', {

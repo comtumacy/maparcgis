@@ -23,6 +23,9 @@
         <el-form-item label="版权" prop="copyright">
           <el-input v-model="ruleForm.copyright"></el-input>
         </el-form-item>
+        <el-form-item label="版权" prop="copyright">
+          <el-input v-model="ruleForm.group"></el-input>
+        </el-form-item>
       </el-form>
       <el-button class="button1" type="success" v-on:click="submitForm('ruleForm')">确定提交</el-button>
       <el-button class="button2" type="info" v-on:click="$emit('sent')">取消更改</el-button>
@@ -49,6 +52,7 @@ export default {
       this.ruleForm.key_value = this.row.key_value
       this.ruleForm.date = this.row.date
       this.ruleForm.copyright = this.row.copyright
+      this.ruleForm.group = this.row.group
     },
     submitForm (ruleForm) {
       this.$refs[ruleForm].validate((valid, field) => {
@@ -79,6 +83,11 @@ export default {
           setTimeout(() => {
             if (field.url) {
               this.$message.error(field.url[0].message)
+            }
+          }, 1200)
+          setTimeout(() => {
+            if (field.group) {
+              this.$message.error(field.group[0].message)
             }
           }, 1200)
           return false
@@ -118,6 +127,10 @@ export default {
         ],
         date: [
           { required: true, message: '请输入时间', trigger: 'change' }
+        ],
+        group: [
+          { required: true, message: '请输入分组名称', trigger: 'blur' },
+          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -135,7 +148,7 @@ export default {
 .adminLeftTableEditAlert
   padding 20px 20px 20px 0
   width 700px
-  height 450px
+  height 510px
   background-color rgb(249,249,251)
   border-radius 20px
   z-index 120

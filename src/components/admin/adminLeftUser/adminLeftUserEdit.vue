@@ -208,7 +208,7 @@ export default {
     initialization () {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/admin/queryAllUser',
+        url: 'http://10.250.0.120:2720/api/Admin/queryAllUser',
         withCredentials: false,
         headers: {
           'token': this.$store.getters.token_getters,
@@ -216,10 +216,12 @@ export default {
           'pagenum': this.nowPage
         }
       }).then(res => {
+        console.log(res)
         this.totalNum = (res.headers.pagecount) * 10
         this.tableData = res.data
         this.loading = false
-      }).catch(() => {
+      }).catch(err => {
+        console.log(err)
         this.$message({
           type: 'error',
           message: '获取数据失败，请刷新页面重新获取!'
@@ -245,7 +247,7 @@ export default {
       this.adminLeftUserEditAlertSign = false
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/user/updateUserByName',
+        url: 'http://10.250.0.120:2720/api/User/updateUserByName',
         data: {
           'user1': {
             'username': username
@@ -258,6 +260,7 @@ export default {
         }
       })
         .then(res => {
+          console.log(res)
           if (res.status === 200) {
             this.$alert('用户信息已经修改成功！', '修改提示', {
               confirmButtonText: '确定',
@@ -268,7 +271,9 @@ export default {
                 })
               }
             })
-            this.initialization()
+            setTimeout(() => {
+              this.initialization()
+            }, 1000)
           } else {
             this.$message.error('修改失败，请检查你的网络')
           }
@@ -286,7 +291,7 @@ export default {
       }).then(() => {
         this.axios({
           method: 'post',
-          url: 'http://yitongli.cn/api/admin/deleteUser',
+          url: 'http://10.250.0.120:2720/api/Admin/deleteUser',
           withCredentials: false,
           headers: {
             'token': this.$store.getters.token_getters,
@@ -305,7 +310,9 @@ export default {
           type: 'success',
           message: '删除成功!'
         })
-        this.initialization()
+        setTimeout(() => {
+          this.initialization()
+        }, 1000)
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -342,11 +349,16 @@ export default {
       this.addUserSign = false
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/app/post_AddUser',
-        data: ruleForm
+        url: 'http://10.250.0.120:2720/api/User/addUser',
+        data: ruleForm,
+        headers: {
+          'token': this.$store.getters.token_getters,
+          'username': this.$store.getters.username_getters
+        }
       })
         .then(res => {
-          if (res.data === '添加成功') {
+          // console.log(res)
+          if (res.data.message === '添加成功') {
             this.$alert('用户已经添加成功！', '添加提示', {
               confirmButtonText: '确定',
               callback: action => {
@@ -357,8 +369,11 @@ export default {
               }
             })
           } else {
-            this.$message.error('添加失败，请检查你的网络')
+            this.$message.info(`添加失败:${res.data.message}`)
           }
+          setTimeout(() => {
+            this.initialization()
+          }, 1000)
         })
         .catch(() => {
           this.$message.error('添加失败，请检查你的网络')
@@ -374,7 +389,7 @@ export default {
       this.searchSign = false
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/user/fuzzyQuery',
+        url: 'http://10.250.0.120:2720/api/User/fuzzyQuery',
         withCredentials: false,
         headers: {
           'token': this.$store.getters.token_getters,
@@ -450,7 +465,7 @@ export default {
           for (let i = 0; i < num; i++) {
             this.axios({
               method: 'post',
-              url: 'http://yitongli.cn/api/admin/deleteUser',
+              url: 'http://10.250.0.120:2720/api/Admin/deleteUser',
               withCredentials: false,
               headers: {
                 'token': this.$store.getters.token_getters,
@@ -470,7 +485,9 @@ export default {
             type: 'success',
             message: '删除成功!'
           })
-          this.initialization()
+          setTimeout(() => {
+            this.initialization()
+          }, 1000)
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -498,7 +515,7 @@ export default {
       this.addUserSign = false
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/department/insert',
+        url: 'http://10.250.0.120:2720/api/Department/insert',
         data: { 'department': ruleForm },
         headers: {
           'token': this.$store.getters.token_getters,
@@ -534,8 +551,7 @@ export default {
       this.department = val
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/user/queryByDepartment',
-        withCredentials: false,
+        url: 'http://10.250.0.120:2720/api/User/queryByDepartment',
         headers: {
           'token': this.$store.getters.token_getters,
           'username': this.$store.getters.username_getters,
@@ -544,9 +560,9 @@ export default {
         data: { 'department': val }
       }).then(res => {
         this.totalNum = res.headers.pagecount * 10
-        this.tableData = res.data
+        this.tableData = res.data.user
         this.loading = false
-        console.log(res)
+        // console.log(res)
       }).catch(err => {
         console.log(err)
         this.$message({

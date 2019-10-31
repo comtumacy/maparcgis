@@ -140,7 +140,7 @@ export default {
         if (valid) {
           this.axios({
             method: 'post',
-            url: 'http://yitongli.cn/api/user/register',
+            url: 'http://10.250.0.120:2720/api/User/register',
             data: this.ruleForm,
             headers: {
               ctoken: this.ctoken,
@@ -171,9 +171,10 @@ export default {
     getCaptchaImg () {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/captcha/getCaptcha',
+        url: 'http://10.250.0.120:2720/api/Captcha/getCaptcha',
         responseType: 'arraybuffer'
       }).then(res => {
+        console.log(res)
         this.ctoken = res.headers.ctoken
         this.captchaImg = 'data:image/png;base64,' + btoa(
           new Uint8Array(res.data)
@@ -191,7 +192,7 @@ export default {
     getDepartment () {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/department/getAllDepartment'
+        url: 'http://10.250.0.120:2720/api/Department/getAllDepartment'
       }).then(res => {
         let list = []
         for (let i = 0; i < res.data.length; i++) {

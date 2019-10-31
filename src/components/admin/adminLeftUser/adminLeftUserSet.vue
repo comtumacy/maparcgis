@@ -51,7 +51,7 @@ export default {
     closeAndEdit (ruleForm, username) {
       this.axios({
         method: 'post',
-        url: 'http://yitongli.cn/api/user/updateUserByName',
+        url: 'http://10.250.0.120:2720/api/User/updateUserByName',
         data: {
           'user1': {
             'username': username

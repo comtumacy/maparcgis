@@ -2,7 +2,7 @@
     <div class="adminLeftUserSetIcon">
       <el-upload
         class="upload-demo"
-        action="http://yitongli.cn/api/pic/upload?username=ydl"
+        v-bind:action="'http://10.250.0.120:2720/api/Pic/upload?username=' + this.$store.getters.username_getters"
         :limit="1"
         :before-upload="beforeUpload"
         :before-remove="beforeRemove"
@@ -55,7 +55,7 @@ export default {
     // 失败函数
     onError (err, file, fileLis) {
       console.log(err)
-      console.log(file)
+      // console.log(file)
     },
     // 文件超出个数限制时的钩子
     handleExceed (files, fileList) {

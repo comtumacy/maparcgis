@@ -64,14 +64,21 @@ export default {
   props: [],
   created () {
     this.axios({
-      methods: 'post',
-      url: 'http://yitongli.cn/app/get_layers'
+      method: 'post',
+      url: 'http://10.250.0.120:2720/api/Layers/getAllLayersList',
+      headers: {
+        'pagenum': 1,
+        'token': this.$store.getters.token_getters,
+        'username': this.$store.getters.username_getters
+      }
     }).then(res => {
+      console.log(res)
+      console.log('ok')
       this.data = res.data
       this.distinct(res.data)
     }).catch(err => {
       console.log(err)
-      console.log('ok')
+      console.log('error')
     })
   },
   data () {

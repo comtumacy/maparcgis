@@ -152,7 +152,7 @@ export default {
       let username = this.$store.getters.username_getters
       this.axios({
         method: 'get',
-        url: `http://yitongli.cn/api/upload/${username}/icon.jpg`,
+        url: `http://10.250.0.120:2720/api/Upload/${username}/icon.jpg`,
         responseType: 'arraybuffer'
       }).then(res => {
         if (res.status === 200) {

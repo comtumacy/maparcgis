@@ -63,12 +63,18 @@
 <script type="text/ecmascript-6">
 export default {
   created () {
-    this.axios.post('http://yitongli.cn/app/get_layers',
-      { timeout: 1000 })
-      .then(res => {
-        this.data = res.data
-        this.loading = false
-      })
+    this.axios({
+      method: 'post',
+      url: 'http://10.250.0.12.:2720/api/Layers/getAllLayersListPaging',
+      headers: {
+        'token': this.$store.getters.token_getters,
+        'username': this.$store.getters.username_getters,
+        'pagenum': 1
+      }
+    }).then(res => {
+      this.data = res.data
+      this.loading = false
+    })
       .catch(() => {
         this.$message.error('获取数据失败，请检查你的网络')
       })
